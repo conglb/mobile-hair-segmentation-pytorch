@@ -13,7 +13,7 @@ def get_mask(image, net, size=224):
     down_size_image = cv2.cvtColor(down_size_image, cv2.COLOR_BGR2RGB)
     down_size_image = torch.from_numpy(down_size_image).float().div(255.0).unsqueeze(0)
     down_size_image = np.transpose(down_size_image, (0, 3, 1, 2)).to(device)
-    mask: torch.nn.Module = net(down_size_image)
+    mask = net(down_size_image)
 
     # mask = torch.squeeze(mask[:, 1, :, :])
     mask = mask.argmax(dim=1).squeeze()
@@ -35,7 +35,7 @@ def alpha_image(image, mask, alpha=0.1):
 
 if __name__ == "__main__":
     config = get_config()
-    pretrained = glob(os.path.join("param", f"MobileHairNet.pth"))[-1]
+    pretrained = glob(os.path.join("param", "MobileHairNet.pth"))[-1]
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     net = MobileHairNet().to(device)
     net.load_state_dict(torch.load(pretrained, map_location=device))
@@ -45,8 +45,8 @@ if __name__ == "__main__":
         raise Exception("webcam is not detected")
 
     while (True):
-        # ret : frame capture결과(boolean)
-        # frame : Capture한 frame
+        # ret : frame capture(boolean)
+        # frame : Capture frame
 
         ret, image = cam.read()
 
