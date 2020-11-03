@@ -18,7 +18,8 @@ parser.add_argument('--sample_step', type=int, default=100, help='step of saving
 parser.add_argument('--checkpoint_step', type=int, default=100, help='step of saving checkpoints')
 parser.add_argument('--data_path', default='./dataset', help='path to dataset')
 parser.add_argument('--test_data_path', default='./dataset', help='path to test dataset')
-parser.add_argument('--checkpoint_dir', default='checkpoints', help="path to saved models (to continue training)")
+parser.add_argument('--checkpoint_dir', default='./checkpoints', help="path to saved models (to continue training)")
+# output in here
 parser.add_argument('--sample_dir', default='samples', help='folder to output images and model checkpoints')
 parser.add_argument('--workers', type=int, default=4, help='number of data loading workers')
 parser.add_argument('--mode', type=str, default='train', help='Trainer mode: train or test')

@@ -14,6 +14,8 @@ import torchvision.transforms as transforms
 from PIL import Image
 import torchvision.transforms.functional as TF
 import random
+from data.figaro import *
+from data.lfw import *
 
 
 def transform(image, mask, image_size=224):
@@ -91,12 +93,27 @@ class Dataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.image_name)
 
+def get_joint_transforms():
+    return transforms.Compose(
+        [
+        transforms.Resize((224, 224)),
+        transforms.ToTensor()
+        ]
+    )
+
+class AllDataset(torch.utils.data.ConcatDataset):
+    
+    def __init__(self, data_folder, image_size):
+        super(AllDataset, self).__init__([LfwDataset(os.path.join(data_folder,'Lfw'), joint_transforms=get_joint_transforms()), FigaroDataset(os.path.join(data_folder,'Figaro1k'), joint_transforms=get_joint_transforms())])
+            
 
 def get_loader(data_folder, batch_size, image_size, shuffle, num_workers):
-    dataset = Dataset(data_folder, image_size)
+    dataset = AllDataset(data_folder, image_size)
 
     dataloader = torch.utils.data.DataLoader(dataset=dataset,
                                              batch_size=batch_size,
                                              shuffle=shuffle,
                                              num_workers=num_workers)
     return dataloader
+
+

@@ -106,7 +106,10 @@ class Trainer:
                     self.save_sample_imgs(image[0], mask[0], torch.argmax(pred[0], 0), self.sample_dir, epoch, step)
                     print('[*] Saved sample images')
 
-            torch.save(self.net.state_dict(), f'{self.checkpoint_dir}/MobileHairNet_epoch-{epoch}.pth')
+            checkpoint_dir = f'{self.checkpoint_dir}/MobileHairNet_epoch-{epoch}.pth'
+            print(checkpoint_dir)
+            torch.save(self.net.state_dict(), checkpoint_dir)
+            print("[*] Saved checkpoints {}".format(checkpoint_dir))
 
     def save_sample_imgs(self, real_img, real_mask, prediction, save_dir, epoch, step):
         data = [real_img, real_mask, prediction]

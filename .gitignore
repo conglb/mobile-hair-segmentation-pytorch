@@ -6,3 +6,5 @@ samples
 image_preprocess.py
 .vscode/*
 .DS_Store
+data/Lfw/*
+data/Figaro1k/*
