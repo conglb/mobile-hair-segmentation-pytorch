@@ -4,3 +4,5 @@ dataset
 checkpoints
 samples
 image_preprocess.py
+.vscode/*
+.DS_Store
