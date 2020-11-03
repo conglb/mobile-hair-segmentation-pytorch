@@ -1,10 +1,10 @@
 .idea
 __pycache__
-dataset
+
 checkpoints
 samples
 image_preprocess.py
 .vscode/*
 .DS_Store
-data/Lfw/*
-data/Figaro1k/*
+dataset/Lfw/*
+dataset/Figaro1k/*
