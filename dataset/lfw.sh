@@ -1,9 +1,9 @@
 #!/bin/bash
 if [ -z "$1" ]
   then
-    # navigate to ~/data
-    echo "navigating to ./data/ ..."
-    cd ./data/
+    # navigate to ~/dataset
+    echo "navigating to ./dataset/ ..."
+    cd ./dataset/
   else
     # check if is valid directory
     if [ ! -d $1 ]; then
