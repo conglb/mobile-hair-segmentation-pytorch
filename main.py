@@ -27,7 +27,7 @@ def main(config):
                              shuffle=True, num_workers=int(config.workers))
     
     trainer = Trainer(config, data_loader)
-    trainer.train()
+    #trainer.train()
     
     test_loader = data.test_loader.get_loader(config.test_data_path, config.test_batch_size, config.image_size,
                                               shuffle=None, num_workers=int(config.workers))

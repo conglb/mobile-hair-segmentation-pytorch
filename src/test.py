@@ -26,26 +26,26 @@ class Tester:
         self.load_model()
 
     def load_model(self):
-        print("[*] Load checkpoint in ", str(self.model_path))
+        print("[*] [TEST] Load checkpoint in ", str(self.model_path))
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
 
         if not os.listdir(self.model_path):
-            print("[!] No checkpoint in ", str(self.model_path))
+            print("[!] [TEST] No checkpoint in ", str(self.model_path))
             return
 
         model_path = os.path.join(self.model_path, f"MobileHairNet_epoch-{self.epoch}.pth")
         model = glob(model_path)
         model.sort()
         if not model:
-            raise Exception(f"[!] No Checkpoint in {model_path}")
+            raise Exception(f"[!] [TEST] No Checkpoint in {model_path}")
 
         self.net.load_state_dict(torch.load(model[-1], map_location=self.device))
-        print(f"[*] Load Model from {model[-1]}: ")
+        print(f"[*] [TEST] Load Model from {model[-1]}: ")
 
     def test(self):
         unnormal = UnNormalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-        for step, (image, mask) in enumerate(self.data_loader):
+        for step, (image, gray, mask) in enumerate(self.data_loader):
             image = unnormal(image.to(self.device))
             mask = mask.to(self.device).repeat_interleave(3, 1)
             result = self.net(image)
@@ -56,5 +56,5 @@ class Tester:
             torch.cat([image, result, mask])
 
             save_image(torch.cat([image, result, mask]), os.path.join(self.sample_dir, f"{step}.png"))
-            print('[*] Saved sample images')
+            print('[*] [TEST] Saved sample images')
 

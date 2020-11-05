@@ -117,3 +117,14 @@ def get_loader(data_folder, batch_size, image_size, shuffle, num_workers):
     return dataloader
 
 
+
+if __name__ == "__main__":
+    from figaro import FigaroDataset
+    from lfw import LfwDataset
+    loader = get_loader('./dataset', 10, 224,  shuffle=False, num_workers=1)
+    for i, batch in enumerate(loader):
+        img, gray, mask = batch 
+        trans = transforms.ToPILImage()
+        gray = trans(gray[0])
+        gray.save('./dataset/{}-gray.jpg'.format(i))
+
