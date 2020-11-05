@@ -8,3 +8,4 @@ image_preprocess.py
 .DS_Store
 dataset/Lfw/*
 dataset/Figaro1k/*
+dataset/*.jpg
