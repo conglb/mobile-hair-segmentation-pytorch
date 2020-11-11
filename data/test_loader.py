@@ -76,9 +76,16 @@ def get_joint_transforms():
         ]
     )
 
-def get_loader(data_folder, batch_size, image_size, shuffle, num_workers):
-    dataset = FigaroDataset(root_dir=os.path.join(data_folder, "Figaro1k"), train=False, joint_transforms=get_joint_transforms())
 
+class AllDataset(torch.utils.data.ConcatDataset):
+    
+    def __init__(self, data_folder, image_size):
+        super(AllDataset, self).__init__([LfwDataset(os.path.join(data_folder,'Lfw'), train=False, joint_transforms=get_joint_transforms()), FigaroDataset(os.path.join(data_folder,'Figaro1k'), train=False, joint_transforms=get_joint_transforms())])
+            
+
+def get_loader(data_folder, batch_size, image_size, shuffle, num_workers):
+    dataset = AllDataset(data_folder, image_size)
+    
     dataloader = torch.utils.data.DataLoader(dataset=dataset,
                                              batch_size=batch_size,
                                              shuffle=shuffle,

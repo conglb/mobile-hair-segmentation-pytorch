@@ -35,7 +35,7 @@ def alpha_image(image, mask, alpha=0.1):
 
 if __name__ == "__main__":
     config = get_config()
-    pretrained = glob(os.path.join("param", "MobileHairNet.pth"))[-1]
+    pretrained = glob(os.path.join("checkpoints", "MobileHairNet_epoch-352.pth"))[-1]
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     net = MobileHairNet().to(device)
     net.load_state_dict(torch.load(pretrained, map_location=device))

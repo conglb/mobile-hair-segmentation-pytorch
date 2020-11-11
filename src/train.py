@@ -79,15 +79,15 @@ class Trainer:
 
                 pred = self.net(image)
 
-                pred_flat = pred.permute(0, 2, 3, 1).contiguous().view(-1, self.num_classes)
+                pred_flat = pred.permute(0, 2, 3, 1).contiguous().view(-1, self.num_classes) # [N,2]
                 mask_flat = mask.squeeze(1).view(-1).long()
 
                 # preds_flat.shape (N*224*224, 2)
                 # masks_flat.shape (N*224*224, 1)
-                image_gradient_loss = image_gradient_criterion(pred, gray_image)
-                bce_loss = bce_criterion(pred_flat, mask_flat)
+                image_gradient_loss = image_gradient_criterion(pred, gray_image) # L_C
+                bce_loss = bce_criterion(pred_flat, mask_flat) # L_M
 
-                loss = bce_loss + self.gradient_loss_weight * image_gradient_loss
+                loss = bce_loss + self.gradient_loss_weight * image_gradient_loss # overall loss
 
                 self.optimizer.zero_grad()
                 loss.backward()

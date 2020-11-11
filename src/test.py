@@ -6,6 +6,7 @@ from glob import glob
 import matplotlib.pyplot as plt
 from torchvision.utils import save_image
 from utils.custom_transfrom import UnNormalize
+from loss.loss import iou_loss
 
 class Tester:
     def __init__(self, config, dataloader):
@@ -45,16 +46,28 @@ class Tester:
 
     def test(self):
         unnormal = UnNormalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+        total_iou = 0
+        print("[TEST] Number of image in testset: {}".format(self.data_loader.batch_size * self.data_loader.__len__()))
         for step, (image, gray, mask) in enumerate(self.data_loader):
             image = unnormal(image.to(self.device))
             mask = mask.to(self.device).repeat_interleave(3, 1)
             result = self.net(image)
+            '''
+            if step == 0:
+                print(image.shape)
+                print(gray.shape)
+                print(mask.shape)
+            '''
+            iou = iou_loss(result, mask)
+            print(iou)
+            total_iou += iou
+
             argmax = torch.argmax(result, dim=1).unsqueeze(dim=1)
             result = result[:, 1, :, :].unsqueeze(dim=1)
             result = result * argmax
             result = result.repeat_interleave(3, 1)
-            torch.cat([image, result, mask])
-
-            save_image(torch.cat([image, result, mask]), os.path.join(self.sample_dir, f"{step}.png"))
-            print('[*] [TEST] Saved sample images')
-
+            #torch.cat([image, result, mask])
+            #save_image(torch.cat([image, result, mask]), os.path.join(self.sample_dir, f"{step}.png"))
+            #print('[*] [TEST] Saved sample images')
+            
+        print(total_iou / len(self.data_loader))

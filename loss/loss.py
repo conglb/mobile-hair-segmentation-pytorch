@@ -40,7 +40,39 @@ class ImageGradientLoss(_WeightedLoss):
 def iou_loss(pred, mask):
     pred = torch.argmax(pred, 1).long()
     mask = torch.squeeze(mask).long()
+
+
     Union = torch.where(pred > mask, pred, mask)
     Overlep = torch.mul(pred, mask)
+    
     loss = torch.div(torch.sum(Overlep).float(), torch.sum(Union).float())
     return loss
+
+
+def get_image_gradient(self, pred, gray_image):
+    size = pred.size()
+    pred = pred.argmax(1).view(size[0], 1, size[2], size[3]).float()
+    print(pred)
+    gradient_tensor_x = torch.Tensor([[1.0, 0.0, -1.0],
+                                        [2.0, 0.0, -2.0],
+                                        [1.0, 0.0, -1.0]]).to(self.device).view((1, 1, 3, 3))
+
+    gradient_tensor_y = torch.Tensor([[1.0, 2.0, 1.0],
+                                        [0.0, 0.0, 0.0],
+                                        [-1.0, -2.0, -1.0]]).to(self.device).view((1, 1, 3, 3))
+
+    I_x = F.conv2d(gray_image, gradient_tensor_x)
+    G_x = F.conv2d(pred, gradient_tensor_x)
+
+    I_y = F.conv2d(gray_image, gradient_tensor_y)
+    G_y = F.conv2d(pred, gradient_tensor_y)
+
+    G = torch.sqrt(torch.pow(G_x, 2) + torch.pow(G_y, 2))
+
+    gradient = 1 - torch.pow(I_x * G_x + I_y * G_y, 2)
+
+    image_gradient_loss = torch.sum(torch.mul(G, gradient)) / torch.sum(G)
+
+    image_gradient_loss = image_gradient_loss if image_gradient_loss > 0 else 0
+
+    return image_gradient_loss
