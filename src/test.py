@@ -45,11 +45,11 @@ class Tester:
         print(f"[*] [TEST] Load Model from {model[-1]}: ")
 
     def test(self):
-        unnormal = UnNormalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+        #unnormal = UnNormalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
         total_iou = 0
         print("[TEST] Number of image in testset: {}".format(self.data_loader.batch_size * self.data_loader.__len__()))
         for step, (image, gray, mask) in enumerate(self.data_loader):
-            image = unnormal(image.to(self.device))
+            #image = unnormal(image.to(self.device))
             mask = mask.to(self.device).repeat_interleave(3, 1)
             result = self.net(image)
             '''
