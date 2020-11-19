@@ -39,3 +39,7 @@ class Up(nn.Module):
 
     def __init__(self, in_channels, out_channels, bilinear=True):
         super().__init__()
+
+        
+
+    def forward(self, x):
