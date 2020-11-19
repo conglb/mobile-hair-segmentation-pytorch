@@ -109,7 +109,7 @@ class AllDataset(torch.utils.data.ConcatDataset):
 
 def get_loader(data_folder, batch_size, image_size, shuffle, num_workers):
     dataset = FigaroDataset(os.path.join(data_folder,'Figaro1k'), joint_transforms=get_joint_transforms())
-
+    
     dataloader = torch.utils.data.DataLoader(dataset=dataset,
                                              batch_size=batch_size,
                                              shuffle=shuffle,

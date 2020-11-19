@@ -102,7 +102,7 @@ class Trainer:
                     print(f"Epoch: [{epoch}/{self.num_epoch}] | Step: [{step}/{self.image_len}] | "
                           f"Bce Loss: {bce_losses.avg:.4f} | Image Gradient Loss: {image_gradient_losses.avg:.4f} | "
                           f"IOU: {iou:.4f}")
-                print(ioe)          
+                print(iou)          
                 if step % self.sample_step == 0:
                     self.save_sample_imgs(image[0], mask[0], torch.argmax(pred[0], 0), self.sample_dir, epoch, step)
                     print('[*] Saved sample images')
