@@ -77,7 +77,11 @@ def get_joint_transforms():
     )
 
 def get_loader(data_folder, batch_size, image_size, shuffle, num_workers):
+<<<<<<< Updated upstream
     dataset = FigaroDataset(root_dir=os.path.join(data_folder, "Figaro1k"), train=False, joint_transforms=get_joint_transforms())
+=======
+    dataset = LfwDataset(os.path.join(data_folder,'Lfw'), train=False, joint_transforms=get_joint_transforms())
+>>>>>>> Stashed changes
 
     dataloader = torch.utils.data.DataLoader(dataset=dataset,
                                              batch_size=batch_size,

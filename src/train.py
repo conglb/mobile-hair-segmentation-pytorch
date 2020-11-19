@@ -107,7 +107,6 @@ class Trainer:
                     print('[*] Saved sample images')
 
             checkpoint_dir = f'{self.checkpoint_dir}/MobileHairNet_epoch-{epoch}.pth'
-            print(checkpoint_dir)
             torch.save(self.net.state_dict(), checkpoint_dir)
             print("[*] Saved checkpoints {}".format(checkpoint_dir))
 
